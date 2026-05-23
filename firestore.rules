@@ -1,0 +1,20 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /products/{productId} {
+      allow read: if true;
+
+      // This supports the current passcode-only admin demo.
+      // For production, replace this with Firebase Auth based admin checks.
+      allow create, update, delete: if true;
+    }
+
+    match /cartItems/{cartItemId} {
+      allow create: if true;
+
+      // Keep customer carts private from public reads.
+      allow read, update, delete: if false;
+    }
+  }
+}

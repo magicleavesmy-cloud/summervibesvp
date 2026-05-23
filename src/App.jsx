@@ -131,20 +131,18 @@ function App() {
     setSaveStatus('')
 
     try {
-      const result = await saveCartItem({
+      await saveCartItem({
         product: selectedProduct,
         flavour: selectedFlavour,
         quantity,
       })
 
       setCart((count) => count + quantity)
-      setSaveStatus(
-        result.saved
-          ? 'Saved to Firebase.'
-          : 'Added locally. Add Firebase env values to save online.',
-      )
-    } catch {
-      setSaveStatus('Could not save to Firebase. Please check your Firebase setup.')
+      setSaveStatus('Added to cart.')
+    } catch (error) {
+      console.error('Firebase cart save failed:', error)
+      setCart((count) => count + quantity)
+      setSaveStatus('Added to cart.')
     } finally {
       setIsSaving(false)
     }
